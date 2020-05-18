@@ -1,7 +1,10 @@
 //require dependencies
 const express = require("express");
 let path = require("path");
-// const jsNotes = require("../db/db.json");
+const fs = require("fs");
+// const jsNotes = fs.readFileSync("/db/db.json");
+// const jsNotes = require("hw_11_noteTaker/Develop/db/db.json");
+// console.log(jsNotes);
 
 //set up express app
 const app = express();
@@ -12,37 +15,32 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(express.static('public'));
 
-//require json file that stores the notes from the front end
-const jsNotes = [];
 
 //Routes
 //=========================
-module.exports = function(app){
-
-//route to send user to index.html - GET
-app.get("*", function(req,res){
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-});
+// module.exports = function(app){
 //route to send user to notes.html - GET
-app.get("/notes",function(req,res){
-    res.sendFile(path.join(__dirname, "../public/notes.html"))
+app.get("/notes", function(req, res) {
+    res.sendFile(path.join(__dirname, "/public/notes.html"));
+  });
+  //route to send user to index.html home page - GET
+app.get("*", function(req,res){
+    res.sendFile(path.join(__dirname, "/public/index.html"));
 });
-};
+// };
 
 //route that displays all notes page? - GET
-app.get("api/notes",function(req,res){
-    // return res(jsNotes);
-    return res.json(jsNotes);
+app.get("/api/notes",function(req,res){
+    return res(jsNotes);
 });
 //route that creates new note - POST
-app.post("api/notes",function(req,res){
+app.post("/api/notes",function(req,res){
     const newNote = req.body;
     console.log(newNote);
     jsNotes.push(newNote);
-    // res(jsNotes)
-    res.json(jsNotes)
+    res(jsNotes)
 })
-// //route that deletes a note - DELETE
+//route that deletes a note - DELETE
 // app.delete("api/notes/:id",function(req,res){
 
 // })
